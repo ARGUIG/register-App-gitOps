@@ -1,7 +1,7 @@
 pipeline {
     agent { label "Jenkins-Agent" }
     environment {
-            APP_NAME = "register-app-pipeline"
+            APP_NAME = "aminearguig/cicd-pipeline"
     }
 
     stages {
