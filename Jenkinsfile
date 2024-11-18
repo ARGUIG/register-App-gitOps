@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh """
                     cat deployment.yaml
-                    sed -i 's|${APP_NAME}:.*|${APP_NAME}:${IMAGE_TAG}|g' deployment.yaml
+                    sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yaml
                     cat deployment.yaml
                 """
             }
@@ -41,5 +41,17 @@ pipeline {
             }
         }
 
+    }
+    post {
+        failure {
+            emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
+                    mimeType: 'text/html',to: "aminearguig07@gmail.com"
+        }
+        success {
+            emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
+                    mimeType: 'text/html',to: "aminearguig07@gmail.com"
+        }      
     }
 }
